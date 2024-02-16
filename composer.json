@@ -1,0 +1,18 @@
+{
+    "name": "cup-of-thea/markdown-blog",
+    "description": "Laravel package dedicated to manage a blog in markdown",
+    "type": "laravel-package",
+    "license": "This work is licensed under CC BY-NC-SA 4.0",
+    "autoload": {
+        "psr-4": {
+            "CupOfThea\\MarkdownBlog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Thea",
+            "email": "thea.joy@outlook.com"
+        }
+    ],
+    "require": {}
+}
