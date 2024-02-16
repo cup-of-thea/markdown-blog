@@ -3,6 +3,7 @@
     "description": "Laravel package dedicated to manage a blog in markdown",
     "type": "laravel-package",
     "license": "This work is licensed under CC BY-NC-SA 4.0",
+    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "CupOfThea\\MarkdownBlog\\": "src/"
@@ -14,5 +15,28 @@
             "email": "thea.joy@outlook.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10.44",
+        "symfony/yaml": "^7.0",
+        "illuminate/console": "^10.44",
+        "erusev/parsedown": "^1.7",
+        "erusev/parsedown-extra": "^0.8.1"
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CupOfThea\\MarkdownBlog\\MarkdownBlogServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    }
 }
