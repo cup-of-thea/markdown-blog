@@ -2,6 +2,12 @@
 
 namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
+use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
+use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\SaveOrUpdatePostCommand;
+use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
+use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use CupOfThea\MarkdownBlog\Exceptions\MissingPostDateException;
+use CupOfThea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use CupOfThea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +15,15 @@ use Symfony\Component\Yaml\Yaml;
 
 class SynchronizeCommand extends Command
 {
+    public function __construct(
+        private DuplicatedPostQuery $duplicatedPostQuery,
+        private SaveOrUpdatePostCommand $saveOrUpdatePostCommand,
+        private LinkTaxonomiesCommand $linkTaxonomiesCommand,
+    )
+    {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -25,59 +40,38 @@ class SynchronizeCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws SlugIsAlreadyTakenException
      */
-    public function handle()
+    public function handle(): int
     {
-        $this->info('Post created successfully.');
-
         collect(Storage::allFiles('posts'))->each(function (string $path) {
-            $this->generate(Storage::get($path), $path);
+            $this->generatePost(Storage::get($path), $path);
         });
 
+        $this->info('Posts synchronized successfully.');
         return Command::SUCCESS;
     }
 
     /**
      * @throws SlugIsAlreadyTakenException
      */
-    public static function generate(string $content, string $path): void
+    public function generatePost(string $content, string $path): void
     {
-        // @todo: refactor this into pipeline
-        $meta = Yaml::parse(str($content)->after('---')->before('---')->trim()->toString());
-        $post = MarkdownPost::parse($content, $path, $meta);
-        self::ensurePostNotDuplicated($post);
-        $savedPost = self::saveOrUpdate($post);
-        self::linkTaxonomies($meta, $savedPost);
+        $post = MarkdownPost::parse($content, $path);
+
+        // @todo: extract this into a separate responsibility
+        $this->ensurePostNotDuplicated($post);
+        $this->saveOrUpdatePostCommand->saveOrUpdate($post);
+        $this->linkTaxonomiesCommand->link($post);
     }
 
-    public static function ensurePostNotDuplicated(MarkdownPost $post): void
+    /**
+     * @throws SlugIsAlreadyTakenException
+     */
+    public function ensurePostNotDuplicated(MarkdownPost $post): void
     {
-        if ($originalPost = Post::where('slug', $post->slug)->where('filePath', '!=', $post->filePath)->first()) {
-            throw new SlugIsAlreadyTakenException($post->slug, $originalPost->filePath, $post->filePath);
-        }
-    }
-
-    public static function saveOrUpdate(MarkdownPost $post): Post
-    {
-        if ($originalPost = Post::where('filePath', $post->filePath)->first()) {
-            $originalPost->update($post->toPostAttributes());
-
-            return $originalPost->refresh();
-        }
-
-        return Post::create($post->toPostAttributes());
-    }
-
-
-    public static function linkTaxonomies(mixed $meta, Post $post)
-    {
-        if (isset($meta['category'])) {
-            $categorySlug = str($meta['category'])->slug();
-            $category =
-                Category::where('slug', $categorySlug)->first()
-                    ?: Category::create(['title' => $meta['category'], 'slug' => $categorySlug]);
-
-            $post->category()->associate($category)->save();
+        if ($originalFilePath = $this->duplicatedPostQuery->check($post->meta->slug, $post->filePath)) {
+            throw new SlugIsAlreadyTakenException($post->meta->slug, $originalFilePath, $post->filePath);
         }
     }
 }
