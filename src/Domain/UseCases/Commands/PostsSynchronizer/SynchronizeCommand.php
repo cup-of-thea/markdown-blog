@@ -6,12 +6,9 @@ use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\SaveOrUpdatePostCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostDateException;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use CupOfThea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Yaml\Yaml;
 
 class SynchronizeCommand extends Command
 {
