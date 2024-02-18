@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\UseCases\Commands\PostsSynchronizer;
+namespace Domain\UseCases\Commands\SynchronizeCommand;
 
 use Carbon\Carbon;
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\PostMeta;
@@ -11,6 +11,10 @@ use PHPUnit\Framework\TestCase;
 class PostMetaTest extends TestCase
 {
 
+    /**
+     * @throws MissingPostTitleException
+     * @throws MissingPostDateException
+     */
     public function test_it_parses_yaml_data_into_post_meta(): void
     {
         $postMeta = PostMeta::parse(<<<CONTENT
@@ -33,6 +37,9 @@ CONTENT
         $this->assertEquals(['tag1', 'tag2'], $postMeta->tags);
     }
 
+    /**
+     * @throws MissingPostDateException
+     */
     public function test_it_fails_when_title_is_missing(): void
     {
         $this->expectException(MissingPostTitleException::class);
@@ -52,6 +59,9 @@ CONTENT
         );
     }
 
+    /**
+     * @throws MissingPostTitleException
+     */
     public function test_it_fails_when_date_is_missing(): void
     {
         $this->expectException(MissingPostDateException::class);

@@ -5,9 +5,9 @@ namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands;
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 use Illuminate\Support\Facades\DB;
 
-class SaveOrUpdatePostCommand
+class UpsertPostCommand
 {
-    public static function saveOrUpdate(MarkdownPost $post): void
+    public static function upsert(MarkdownPost $post): void
     {
         $query = DB::table('posts')->where('filePath', $post->filePath);
 

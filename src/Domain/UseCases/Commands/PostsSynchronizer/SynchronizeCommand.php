@@ -3,7 +3,7 @@
 namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
 use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\SaveOrUpdatePostCommand;
+use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 use CupOfThea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Storage;
 class SynchronizeCommand extends Command
 {
     public function __construct(
-        private DuplicatedPostQuery $duplicatedPostQuery,
-        private SaveOrUpdatePostCommand $saveOrUpdatePostCommand,
-        private LinkTaxonomiesCommand $linkTaxonomiesCommand,
+        private readonly DuplicatedPostQuery   $duplicatedPostQuery,
+        private readonly UpsertPostCommand     $upsertPostCommand,
+        private readonly LinkTaxonomiesCommand $linkTaxonomiesCommand,
     )
     {
         parent::__construct();
@@ -44,8 +44,8 @@ class SynchronizeCommand extends Command
         collect(Storage::allFiles('posts'))->each(function (string $path) {
             $this->generatePost(Storage::get($path), $path);
         });
-
         $this->info('Posts synchronized successfully.');
+
         return Command::SUCCESS;
     }
 
@@ -54,21 +54,26 @@ class SynchronizeCommand extends Command
      */
     public function generatePost(string $content, string $path): void
     {
-        $post = MarkdownPost::parse($content, $path);
-
-        // @todo: extract this into a separate responsibility
-        $this->ensurePostNotDuplicated($post);
-        $this->saveOrUpdatePostCommand->saveOrUpdate($post);
-        $this->linkTaxonomiesCommand->link($post);
+        $this->commit(MarkdownPost::parse($content, $path));
     }
 
     /**
      * @throws SlugIsAlreadyTakenException
      */
-    public function ensurePostNotDuplicated(MarkdownPost $post): void
+    private function ensurePostNotDuplicated(MarkdownPost $post): void
     {
         if ($originalFilePath = $this->duplicatedPostQuery->check($post->meta->slug, $post->filePath)) {
             throw new SlugIsAlreadyTakenException($post->meta->slug, $originalFilePath, $post->filePath);
         }
+    }
+
+    /**
+     * @throws SlugIsAlreadyTakenException
+     */
+    private function commit(MarkdownPost $post): void
+    {
+        $this->ensurePostNotDuplicated($post);
+        $this->upsertPostCommand->upsert($post);
+        $this->linkTaxonomiesCommand->link($post);
     }
 }
