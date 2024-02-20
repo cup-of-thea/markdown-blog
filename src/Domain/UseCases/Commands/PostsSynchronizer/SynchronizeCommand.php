@@ -8,6 +8,7 @@ use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 use CupOfThea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class SynchronizeCommand extends Command
@@ -46,6 +47,7 @@ class SynchronizeCommand extends Command
         collect(Storage::allFiles('posts'))->each(function (string $path) {
             $this->generatePost(Storage::get($path), $path);
         });
+
         $this->info('Posts synchronized successfully.');
 
         return Command::SUCCESS;
