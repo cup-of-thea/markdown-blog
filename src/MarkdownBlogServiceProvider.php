@@ -18,6 +18,7 @@ class MarkdownBlogServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // @todo: move bindings to attribute
         $this->app->bind(DuplicatedPostQuery::class, function (Application $app) {
             return new DuplicatedPostQuery();
         });

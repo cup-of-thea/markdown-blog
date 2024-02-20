@@ -12,7 +12,6 @@ class Post implements Wireable
         public string  $slug,
         public string  $content,
         public Carbon  $date,
-        public ?string $description,
     )
     {
     }
@@ -21,11 +20,10 @@ class Post implements Wireable
         string  $title,
         string  $slug,
         string  $content,
-        Carbon  $date,
-        ?string $description = null,
+        Carbon  $date
     ): Post
     {
-        return new self($title, $slug, $content, $date, $description);
+        return new self($title, $slug, $content, $date);
     }
 
     public function toLivewire(): array
@@ -34,8 +32,7 @@ class Post implements Wireable
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
-            'date' => $this->date,
-            'description' => $this->description,
+            'date' => new Carbon($this->date),
         ];
     }
 
@@ -46,7 +43,6 @@ class Post implements Wireable
             $value->slug,
             $value->content,
             $value->date,
-            $value->description
         );
     }
 }
