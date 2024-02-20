@@ -41,6 +41,8 @@ class SynchronizeCommand extends Command
      */
     public function handle(): int
     {
+        $this->info('Starting.');
+
         collect(Storage::allFiles('posts'))->each(function (string $path) {
             $this->generatePost(Storage::get($path), $path);
         });

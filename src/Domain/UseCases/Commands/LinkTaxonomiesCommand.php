@@ -3,6 +3,7 @@
 namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands;
 
 use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use CupOfThea\MarkdownBlog\Domain\ValueObjects\Tag;
 use Illuminate\Support\Facades\DB;
 
 class LinkTaxonomiesCommand
@@ -41,15 +42,13 @@ class LinkTaxonomiesCommand
     {
         if (!empty($post->meta->tags)) {
             $tagIds = collect($post->meta->tags)
-                ->map(fn($tag) => str($tag)->slug())
-                ->map(fn($tag) => $this->findOrCreateTag($tag))
+                ->map(fn($tag) => Tag::from($tag, str($tag)->slug()))
+                ->map(fn(Tag $tag) => $this->getOrCreateTagId($tag))
                 ->toArray();
 
             $postId = DB::table('posts')->where('slug', $post->meta->slug)->first()->id;
 
-            DB::table('post_tag')->where('post_id', $postId)->delete();
-
-            DB::table('post_tag')->insert(
+            DB::table('post_tag')->insertOrIgnore(
                 collect($tagIds)
                     ->map(fn($tagId) => ['post_id' => $postId, 'tag_id' => $tagId])
                     ->toArray()
@@ -57,14 +56,10 @@ class LinkTaxonomiesCommand
         }
     }
 
-    private function findOrCreateTag($tag)
+    private function getOrCreateTagId(Tag $tag)
     {
-        $query = DB::table('tags')->where('slug', $tag);
-
-        $query->count() ?: $query->insert([
-            'title' => $tag,
-            'slug' => $tag,
-        ]);
+        $query = DB::table('tags')->where('slug', $tag->slug);
+        $query->count() ?: $query->insert(['title' => $tag->title, 'slug' => $tag->slug]);
 
         return $query->first()->id;
     }

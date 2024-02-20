@@ -6,6 +6,8 @@ use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\SynchronizeCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
 use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
+use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\GetTagQuery;
+use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\IndexTagsQuery;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,12 @@ class MarkdownBlogServiceProvider extends ServiceProvider
         $this->app->bind(LinkTaxonomiesCommand::class, function (Application $app) {
             return new LinkTaxonomiesCommand();
         });
+        $this->app->bind(IndexTagsQuery::class, function (Application $app) {
+            return new IndexTagsQuery();
+        });
+        $this->app->bind(GetTagQuery::class, function (Application $app) {
+            return new GetTagQuery();
+        });
     }
 
     /**
@@ -33,7 +41,6 @@ class MarkdownBlogServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         if ($this->app->runningInConsole()) {
             $this->commands([
                 SynchronizeCommand::class,
