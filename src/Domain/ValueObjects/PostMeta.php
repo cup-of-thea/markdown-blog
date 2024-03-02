@@ -24,7 +24,8 @@ readonly class PostMeta
             category: $params['category'] ?? null,
             description: $params['description'] ?? null,
             tags: $params['tags'] ?? null,
-            canonical: $params['canonical'] ?? null
+            canonical: $params['canonical'] ?? null,
+            authors: $params['authors'] ?? null
         );
     }
 
@@ -35,6 +36,7 @@ readonly class PostMeta
         public ?string $category,
         public ?string $description,
         public ?array  $tags,
-        public ?string $canonical
+        public ?string $canonical,
+        public ?array  $authors
     ) {}
 }

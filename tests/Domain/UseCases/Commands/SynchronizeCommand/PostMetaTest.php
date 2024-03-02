@@ -23,6 +23,7 @@ date: "2021-01-01"
 category: "My category"
 tags: ["tag1", "tag2"]
 canonical: "https://example.com/my-first-post"
+authors: ["Thea", "Jane"]
 ---
 
 # My first post
@@ -36,6 +37,7 @@ CONTENT
         $this->assertEquals('My category', $postMeta->category);
         $this->assertEquals(['tag1', 'tag2'], $postMeta->tags);
         $this->assertEquals('https://example.com/my-first-post', $postMeta->canonical);
+        $this->assertEquals(['Thea', 'Jane'], $postMeta->authors);
     }
 
     /**
