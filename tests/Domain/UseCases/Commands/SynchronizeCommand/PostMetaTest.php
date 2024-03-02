@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class PostMetaTest extends TestCase
 {
-
     /**
      * @throws MissingPostTitleException
      * @throws MissingPostDateException
@@ -23,6 +22,7 @@ title: "My first post"
 date: "2021-01-01"
 category: "My category"
 tags: ["tag1", "tag2"]
+canonical: "https://example.com/my-first-post"
 ---
 
 # My first post
@@ -35,6 +35,7 @@ CONTENT
         $this->assertEquals(new Carbon('2021-01-01'), $postMeta->date);
         $this->assertEquals('My category', $postMeta->category);
         $this->assertEquals(['tag1', 'tag2'], $postMeta->tags);
+        $this->assertEquals('https://example.com/my-first-post', $postMeta->canonical);
     }
 
     /**

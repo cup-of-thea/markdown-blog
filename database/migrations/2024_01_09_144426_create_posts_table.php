@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->longText('content')->nullable();
             $table->string('filePath')->unique();
+            $table->string('canonical')->nullable();
             $table->timestamp('date');
             $table->timestamps();
         });

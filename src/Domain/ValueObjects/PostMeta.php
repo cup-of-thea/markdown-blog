@@ -23,7 +23,8 @@ readonly class PostMeta
             date: isset($params['date']) ? new Carbon($params['date']) : throw new MissingPostDateException(),
             category: $params['category'] ?? null,
             description: $params['description'] ?? null,
-            tags: $params['tags'] ?? null
+            tags: $params['tags'] ?? null,
+            canonical: $params['canonical'] ?? null
         );
     }
 
@@ -33,6 +34,7 @@ readonly class PostMeta
         public Carbon  $date,
         public ?string $category,
         public ?string $description,
-        public ?array  $tags
+        public ?array  $tags,
+        public ?string $canonical
     ) {}
 }
