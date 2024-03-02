@@ -1,6 +1,6 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\ValueObjects;
+namespace Thea\MarkdownBlog\Domain\ValueObjects;
 
 use Livewire\Wireable;
 

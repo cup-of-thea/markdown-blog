@@ -1,9 +1,9 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Queries;
+namespace Thea\MarkdownBlog\Domain\UseCases\Queries;
 
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Category;
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Post;
+use Thea\MarkdownBlog\Domain\ValueObjects\Category;
+use Thea\MarkdownBlog\Domain\ValueObjects\Post;
 use Illuminate\Support\Facades\DB;
 
 class GetCategoryFromPostQuery

@@ -1,8 +1,8 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands;
+namespace Thea\MarkdownBlog\Domain\UseCases\Commands;
 
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 use Illuminate\Support\Facades\DB;
 
 class UpsertPostCommand

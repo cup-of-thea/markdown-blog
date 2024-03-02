@@ -1,6 +1,6 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Queries;
+namespace Thea\MarkdownBlog\Domain\UseCases\Queries;
 
 use Illuminate\Support\Facades\DB;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands;
+namespace Thea\MarkdownBlog\Domain\UseCases\Commands;
 
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Tag;
+use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use Thea\MarkdownBlog\Domain\ValueObjects\Tag;
 use Illuminate\Support\Facades\DB;
 
 class LinkTaxonomiesCommand

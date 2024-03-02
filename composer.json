@@ -6,7 +6,7 @@
     "version": "1.2.0",
     "autoload": {
         "psr-4": {
-            "CupOfThea\\MarkdownBlog\\": "src/"
+            "Thea\\MarkdownBlog\\": "src/"
         }
     },
     "authors": [
@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CupOfThea\\MarkdownBlog\\MarkdownBlogServiceProvider"
+                "Thea\\MarkdownBlog\\MarkdownBlogServiceProvider"
             ]
         }
     },

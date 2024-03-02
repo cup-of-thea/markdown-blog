@@ -2,7 +2,7 @@
 
 namespace Domain\UseCases\Commands\SynchronizeCommand\Pipes;
 
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\RemoveMeta;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\RemoveMeta;
 use PHPUnit\Framework\TestCase;
 
 class RemoveMetaTest extends TestCase

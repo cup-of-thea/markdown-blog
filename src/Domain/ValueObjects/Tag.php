@@ -1,6 +1,6 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\ValueObjects;
+namespace Thea\MarkdownBlog\Domain\ValueObjects;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;

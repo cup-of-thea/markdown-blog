@@ -1,10 +1,10 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\ValueObjects;
+namespace Thea\MarkdownBlog\Domain\ValueObjects;
 
 use Carbon\Carbon;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostDateException;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostTitleException;
+use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
+use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use Symfony\Component\Yaml\Yaml;
 
 readonly class PostMeta

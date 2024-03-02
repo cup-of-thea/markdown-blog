@@ -1,9 +1,9 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Queries;
+namespace Thea\MarkdownBlog\Domain\UseCases\Queries;
 
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Post;
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Tag;
+use Thea\MarkdownBlog\Domain\ValueObjects\Post;
+use Thea\MarkdownBlog\Domain\ValueObjects\Tag;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

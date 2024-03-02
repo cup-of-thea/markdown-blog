@@ -1,12 +1,12 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
+namespace Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
-use CupOfThea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
+use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use Thea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

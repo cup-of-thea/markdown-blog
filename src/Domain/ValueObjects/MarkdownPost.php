@@ -1,9 +1,9 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\ValueObjects;
+namespace Thea\MarkdownBlog\Domain\ValueObjects;
 
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\RemoveMeta;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\ToHtml;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\RemoveMeta;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes\ToHtml;
 use Illuminate\Support\Facades\Pipeline;
 
 readonly class MarkdownPost

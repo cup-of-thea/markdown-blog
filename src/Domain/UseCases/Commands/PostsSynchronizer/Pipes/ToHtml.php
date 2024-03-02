@@ -1,6 +1,6 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes;
+namespace Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\Pipes;
 
 use ParsedownExtra;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Domain\UseCases\Queries;
+namespace Thea\MarkdownBlog\Domain\UseCases\Queries;
 
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\Tag;
+use Thea\MarkdownBlog\Domain\ValueObjects\Tag;
 use Illuminate\Support\Facades\DB;
 
 class GetTagQuery

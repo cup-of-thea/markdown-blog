@@ -1,17 +1,16 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog;
+namespace Thea\MarkdownBlog;
 
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\SynchronizeCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\GetCategoryFromPostQuery;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\GetPostQuery;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\GetTagQuery;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\GetTagsFromPost;
-use CupOfThea\MarkdownBlog\Domain\UseCases\Queries\IndexTagsQuery;
-use Illuminate\Contracts\Foundation\Application;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\SynchronizeCommand;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\GetCategoryFromPostQuery;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\GetPostQuery;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\GetTagQuery;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\GetTagsFromPost;
+use Thea\MarkdownBlog\Domain\UseCases\Queries\IndexTagsQuery;
 use Illuminate\Support\ServiceProvider;
 
 class MarkdownBlogServiceProvider extends ServiceProvider

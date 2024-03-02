@@ -3,9 +3,9 @@
 namespace Domain\UseCases\Commands\SynchronizeCommand;
 
 use Carbon\Carbon;
-use CupOfThea\MarkdownBlog\Domain\ValueObjects\PostMeta;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostDateException;
-use CupOfThea\MarkdownBlog\Exceptions\MissingPostTitleException;
+use Thea\MarkdownBlog\Domain\ValueObjects\PostMeta;
+use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
+use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use PHPUnit\Framework\TestCase;
 
 class PostMetaTest extends TestCase

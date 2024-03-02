@@ -1,6 +1,6 @@
 <?php
 
-namespace CupOfThea\MarkdownBlog\Exceptions;
+namespace Thea\MarkdownBlog\Exceptions;
 
 use Exception;
 
