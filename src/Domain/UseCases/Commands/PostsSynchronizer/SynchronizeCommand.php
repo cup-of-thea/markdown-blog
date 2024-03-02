@@ -2,10 +2,13 @@
 
 namespace Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
+use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkAuthorsCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Queries\DuplicatedPostQuery;
 use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
+use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
+use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use Thea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +20,7 @@ class SynchronizeCommand extends Command
         private readonly DuplicatedPostQuery   $duplicatedPostQuery,
         private readonly UpsertPostCommand     $upsertPostCommand,
         private readonly LinkTaxonomiesCommand $linkTaxonomiesCommand,
+        private readonly LinkAuthorsCommand    $linkAuthorsCommand,
     )
     {
         parent::__construct();
@@ -55,6 +59,8 @@ class SynchronizeCommand extends Command
 
     /**
      * @throws SlugIsAlreadyTakenException
+     * @throws MissingPostDateException
+     * @throws MissingPostTitleException
      */
     public function generatePost(string $content, string $path): void
     {
@@ -79,5 +85,6 @@ class SynchronizeCommand extends Command
         $this->ensurePostNotDuplicated($post);
         $this->upsertPostCommand->upsert($post);
         $this->linkTaxonomiesCommand->link($post);
+        $this->linkAuthorsCommand->link($post);
     }
 }

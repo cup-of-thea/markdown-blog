@@ -2,6 +2,7 @@
 
 namespace Thea\MarkdownBlog;
 
+use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkAuthorsCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer\SynchronizeCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
@@ -24,6 +25,7 @@ class MarkdownBlogServiceProvider extends ServiceProvider
         $this
             ->scoped(UpsertPostCommand::class)
             ->scoped(LinkTaxonomiesCommand::class)
+            ->scoped(LinkAuthorsCommand::class)
 
             ->scoped(DuplicatedPostQuery::class)
             ->scoped(IndexTagsQuery::class)
