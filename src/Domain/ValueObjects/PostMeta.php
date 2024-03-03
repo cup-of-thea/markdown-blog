@@ -3,9 +3,10 @@
 namespace Thea\MarkdownBlog\Domain\ValueObjects;
 
 use Carbon\Carbon;
+use InvalidArgumentException;
+use Symfony\Component\Yaml\Yaml;
 use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
 use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
-use Symfony\Component\Yaml\Yaml;
 
 readonly class PostMeta
 {
@@ -16,6 +17,8 @@ readonly class PostMeta
     public static function parse(string $content): self
     {
         $params = Yaml::parse(str($content)->after('---')->before('---')->trim()->toString());
+
+        self::ensureDescriptionLengthIsValid($params);
 
         return new self(
             title: $params['title'] ?? throw new MissingPostTitleException(),
@@ -39,4 +42,11 @@ readonly class PostMeta
         public ?string $canonical,
         public ?array  $authors
     ) {}
+
+    private static function ensureDescriptionLengthIsValid(mixed $params): void
+    {
+        if (isset($params['description']) && strlen($params['description']) > 255) {
+            throw new InvalidArgumentException('The description length must be less than 255 characters.');
+        }
+    }
 }
