@@ -18,7 +18,7 @@ class LinkAuthorsCommand
     {
         if (!empty($post->meta->authors)) {
             $authorIds = collect($post->meta->authors)
-                ->map(fn($author) => Tag::from($author, str($author)->slug()))
+                ->map(fn($author) => Author::from($author, str($author)->slug()))
                 ->map(fn(Author $author) => $this->getOrCreateAuthorId($author))
                 ->toArray();
 
