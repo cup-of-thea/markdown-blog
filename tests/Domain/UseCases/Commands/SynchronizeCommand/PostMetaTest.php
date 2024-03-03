@@ -19,6 +19,7 @@ class PostMetaTest extends TestCase
         $postMeta = PostMeta::parse(<<<CONTENT
 ---
 title: "My first post"
+description: "My first post description"
 date: "2021-01-01"
 category: "My category"
 tags: ["tag1", "tag2"]
@@ -38,6 +39,7 @@ CONTENT
         $this->assertEquals(['tag1', 'tag2'], $postMeta->tags);
         $this->assertEquals('https://example.com/my-first-post', $postMeta->canonical);
         $this->assertEquals(['Thea', 'Jane'], $postMeta->authors);
+        $this->assertEquals('My first post description', $postMeta->description);
     }
 
     /**

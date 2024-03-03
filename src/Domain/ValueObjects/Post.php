@@ -20,7 +20,7 @@ class Post implements Wireable
         string  $title,
         string  $slug,
         string  $content,
-        Carbon  $date
+        Carbon  $date,
     ): Post
     {
         return new self($title, $slug, $content, $date);
