@@ -3,10 +3,11 @@
 namespace Domain\UseCases\Commands\SynchronizeCommand;
 
 use Carbon\Carbon;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Thea\MarkdownBlog\Domain\ValueObjects\PostMeta;
 use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
 use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
-use PHPUnit\Framework\TestCase;
 
 class PostMetaTest extends TestCase
 {
@@ -85,4 +86,27 @@ bla bla bla
 CONTENT
         );
     }
+
+    public function test_it_fails_when_description_is_too_long(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The description length must be less than 255 characters.');
+
+        $description = str_repeat('a', 256);
+        PostMeta::parse(<<<CONTENT
+---
+title: "My first post"
+category: "My category"
+date: 2021-01-01
+description: {$description}
+tags: ["tag1", "tag2"]
+---
+
+# My first post
+
+bla bla bla
+CONTENT
+        );
+    }
+
 }
