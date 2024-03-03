@@ -34,15 +34,18 @@ readonly class MarkdownPost
 
     private function __construct(
         public PostMeta $meta,
-        public string $content,
-        public string $filePath,
-    ){}
+        public string   $content,
+        public string   $filePath,
+    )
+    {
+    }
 
     public function toPostAttributes(): array
     {
         return [
             'title' => $this->meta->title,
             'slug' => $this->meta->slug,
+            'description' => $this->meta->description,
             'content' => $this->content,
             'filePath' => $this->filePath,
             'date' => $this->meta->date->locale('fr'),
