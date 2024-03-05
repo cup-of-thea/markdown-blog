@@ -3,7 +3,7 @@
     "description": "Laravel package dedicated to manage a blog in markdown",
     "type": "laravel-package",
     "license": "CC-BY-NC-SA-4.0",
-    "version": "1.5.3",
+    "version": "1.6.1",
     "autoload": {
         "psr-4": {
             "Thea\\MarkdownBlog\\": "src/"
