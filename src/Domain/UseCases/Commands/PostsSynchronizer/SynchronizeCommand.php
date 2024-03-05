@@ -2,6 +2,8 @@
 
 namespace Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkAuthorsCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
@@ -10,9 +12,6 @@ use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 use Thea\MarkdownBlog\Exceptions\MissingPostDateException;
 use Thea\MarkdownBlog\Exceptions\MissingPostTitleException;
 use Thea\MarkdownBlog\Exceptions\SlugIsAlreadyTakenException;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class SynchronizeCommand extends Command
 {
@@ -42,6 +41,8 @@ class SynchronizeCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws MissingPostDateException
+     * @throws MissingPostTitleException
      * @throws SlugIsAlreadyTakenException
      */
     public function handle(): int
