@@ -23,6 +23,7 @@ title: "My first post"
 description: "My first post description"
 date: "2021-01-01"
 category: "My category"
+edition: "Mars 2024"
 tags: ["tag1", "tag2"]
 canonical: "https://example.com/my-first-post"
 authors: ["Thea", "Jane"]
@@ -37,6 +38,7 @@ CONTENT
         $this->assertEquals('My first post', $postMeta->title);
         $this->assertEquals(new Carbon('2021-01-01'), $postMeta->date);
         $this->assertEquals('My category', $postMeta->category);
+        $this->assertEquals('Mars 2024', $postMeta->edition);
         $this->assertEquals(['tag1', 'tag2'], $postMeta->tags);
         $this->assertEquals('https://example.com/my-first-post', $postMeta->canonical);
         $this->assertEquals(['Thea', 'Jane'], $postMeta->authors);
