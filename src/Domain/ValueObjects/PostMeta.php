@@ -29,7 +29,9 @@ readonly class PostMeta
             description: $params['description'] ?? null,
             tags: $params['tags'] ?? null,
             canonical: $params['canonical'] ?? null,
-            authors: $params['authors'] ?? null
+            authors: $params['authors'] ?? null,
+            series: $params['series'] ?? null,
+            episode: $params['episode'] ?? null,
         );
     }
 
@@ -42,7 +44,9 @@ readonly class PostMeta
         public ?string $description,
         public ?array  $tags,
         public ?string $canonical,
-        public ?array  $authors
+        public ?array  $authors,
+        public ?string $series,
+        public ?string $episode,
     ) {}
 
     private static function ensureDescriptionLengthIsValid(mixed $params): void
