@@ -4,6 +4,7 @@ namespace Thea\MarkdownBlog\Domain\UseCases\Commands\PostsSynchronizer;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Thea\MarkdownBlog\Domain\UseCases\Commands\FillPostMetaCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkAuthorsCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\LinkTaxonomiesCommand;
 use Thea\MarkdownBlog\Domain\UseCases\Commands\UpsertPostCommand;
@@ -20,23 +21,14 @@ class SynchronizeCommand extends Command
         private readonly UpsertPostCommand     $upsertPostCommand,
         private readonly LinkTaxonomiesCommand $linkTaxonomiesCommand,
         private readonly LinkAuthorsCommand    $linkAuthorsCommand,
+        private readonly FillPostMetaCommand   $fillPostMetaCommand,
     )
     {
         parent::__construct();
     }
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    
     protected $signature = 'app:synchronize';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Synchronize posts from storage to database.';
 
     /**
@@ -84,8 +76,9 @@ class SynchronizeCommand extends Command
     private function commit(MarkdownPost $post): void
     {
         $this->ensurePostNotDuplicated($post);
-        $this->upsertPostCommand->upsert($post);
-        $this->linkTaxonomiesCommand->link($post);
-        $this->linkAuthorsCommand->link($post);
+        $postId = $this->upsertPostCommand->upsert($post);
+        $this->linkTaxonomiesCommand->link($postId, $post);
+        $this->linkAuthorsCommand->link($postId, $post);
+        $this->fillPostMetaCommand->fill($postId, $post);
     }
 }

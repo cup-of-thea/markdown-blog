@@ -32,6 +32,7 @@ readonly class PostMeta
             authors: $params['authors'] ?? null,
             series: $params['series'] ?? null,
             episode: $params['episode'] ?? null,
+            reviewAuthors: $params['review_authors'] ?? null,
         );
     }
 
@@ -47,7 +48,10 @@ readonly class PostMeta
         public ?array  $authors,
         public ?string $series,
         public ?string $episode,
-    ) {}
+        public ?string $reviewAuthors
+    )
+    {
+    }
 
     private static function ensureDescriptionLengthIsValid(mixed $params): void
     {
