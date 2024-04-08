@@ -8,12 +8,12 @@ use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
 
 class LinkAuthorsCommand
 {
-    public function link(MarkdownPost $post): void
+    public function link(int $postId, MarkdownPost $post): void
     {
-        $this->linkAuthors($post);
+        $this->linkAuthors($postId, $post);
     }
 
-    private function linkAuthors(MarkdownPost $post): void
+    private function linkAuthors(int $postId, MarkdownPost $post): void
     {
         if (!empty($post->meta->authors)) {
             $authorIds = collect($post->meta->authors)
@@ -21,12 +21,17 @@ class LinkAuthorsCommand
                 ->map(fn(Author $author) => $this->getOrCreateAuthorId($author))
                 ->toArray();
 
-            $postId = DB::table('posts')->where('slug', $post->meta->slug)->first()->id;
-
-            DB::table('post_author')->insertOrIgnore(
+            DB::table('post_author')->upsert(
                 collect($authorIds)
-                    ->map(fn($authorId) => ['post_id' => $postId, 'author_id' => $authorId])
-                    ->toArray()
+                    ->map(fn($authorId) => [
+                        'post_id' => $postId,
+                        'author_id' => $authorId,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ])
+                    ->toArray(),
+                ['post_id', 'author_id'],
+                ['updated_at']
             );
         }
     }
@@ -34,7 +39,12 @@ class LinkAuthorsCommand
     private function getOrCreateAuthorId(Author $tag)
     {
         $query = DB::table('authors')->where('slug', $tag->slug);
-        $query->count() ?: $query->insert(['name' => $tag->name, 'slug' => $tag->slug]);
+        $query->upsert([
+            'name' => $tag->name,
+            'slug' => $tag->slug,
+            'created_at' => now(),
+            'update_at' => now()
+        ], 'slug', ['name', 'slug', 'update_at']);
 
         return $query->first()->id;
     }

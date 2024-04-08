@@ -8,12 +8,12 @@ use Thea\MarkdownBlog\Domain\ValueObjects\Tag;
 
 class LinkTaxonomiesCommand
 {
-    public function link(MarkdownPost $post): void
+    public function link(int $postId, MarkdownPost $post): void
     {
         $this->linkCategory($post);
         $this->linkEdition($post);
-        $this->linkTags($post);
-        $this->linkSeries($post);
+        $this->linkTags($postId, $post);
+        $this->linkSeries($postId, $post);
     }
 
     /**
@@ -30,13 +30,13 @@ class LinkTaxonomiesCommand
             $query->count() ?: $query->insert([
                 'title' => $post->meta->category,
                 'slug' => $categorySlug,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-
-            $categoryId = $query->first()->id;
 
             DB::table('posts')
                 ->where('slug', $post->meta->slug)
-                ->update(['category_id' => $categoryId]);
+                ->update(['category_id' => $query->first()->id, 'updated_at' => now()]);
         }
     }
 
@@ -50,17 +50,19 @@ class LinkTaxonomiesCommand
             $query->count() ?: $query->insert([
                 'title' => $post->meta->edition,
                 'slug' => $editionSlug,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $editionId = $query->first()->id;
 
             DB::table('posts')
                 ->where('slug', $post->meta->slug)
-                ->update(['edition_id' => $editionId]);
+                ->update(['edition_id' => $editionId, 'updated_at' => now()]);
         }
     }
 
-    private function linkTags(MarkdownPost $post): void
+    private function linkTags(int $postId, MarkdownPost $post): void
     {
         if (!empty($post->meta->tags)) {
             $tagIds = collect($post->meta->tags)
@@ -68,12 +70,12 @@ class LinkTaxonomiesCommand
                 ->map(fn(Tag $tag) => $this->getOrCreateTagId($tag))
                 ->toArray();
 
-            $postId = DB::table('posts')->where('slug', $post->meta->slug)->first()->id;
-
-            DB::table('post_tag')->insertOrIgnore(
+            DB::table('post_tag')->upsert(
                 collect($tagIds)
-                    ->map(fn($tagId) => ['post_id' => $postId, 'tag_id' => $tagId])
-                    ->toArray()
+                    ->map(fn($tagId) => ['post_id' => $postId, 'tag_id' => $tagId, 'created_at' => now(), 'updated_at' => now()])
+                    ->toArray(),
+                ['post_id', 'tag_id'],
+                ['updated_at']
             );
         }
     }
@@ -81,33 +83,40 @@ class LinkTaxonomiesCommand
     private function getOrCreateTagId(Tag $tag)
     {
         $query = DB::table('tags')->where('slug', $tag->slug);
-        $query->count() ?: $query->insert(['title' => $tag->title, 'slug' => $tag->slug]);
+
+        $query->upsert([
+            'title' => $tag->title,
+            'slug' => $tag->slug,
+            'created_at' => now(),
+            'update_at' => now()
+        ], ['slug'], ['title', 'updated_at']);
 
         return $query->first()->id;
     }
 
-    private function linkSeries(MarkdownPost $post): void
+    private function linkSeries(int $postId, MarkdownPost $post): void
     {
         if (!empty($post->meta->series)) {
             $seriesSlug = str($post->meta->series)->slug();
 
             $query = DB::table('series')->where('slug', $seriesSlug);
 
-            $query->count() ?: $query->insert([
+            $query->upsert([
                 'title' => $post->meta->series,
                 'slug' => $seriesSlug,
-            ]);
+                'created_at' => now(),
+                'updated_at' => now(),
+            ], ['slug'], ['title', 'updated_at']);
 
             $seriesId = $query->first()->id;
 
-            $postId = DB::table('posts')->where('slug', $post->meta->slug)->first()->id;
-
-            DB::table('episodes')
-                ->insertOrIgnore([
-                    'post_id' => $postId,
-                    'series_id' => $seriesId,
-                    'episode_number' => $post->meta->episode ?? '1',
-                ]);
+            DB::table('episodes')->upsert([
+                'post_id' => $postId,
+                'series_id' => $seriesId,
+                'episode_number' => $post->meta->episode ?? '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ], ['post_id', 'series_id'], ['episode_number', 'updated_at']);
         }
     }
 
