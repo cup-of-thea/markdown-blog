@@ -88,7 +88,7 @@ class LinkTaxonomiesCommand
             'title' => $tag->title,
             'slug' => $tag->slug,
             'created_at' => now(),
-            'update_at' => now()
+            'updated_at' => now()
         ], ['slug'], ['title', 'updated_at']);
 
         return $query->first()->id;

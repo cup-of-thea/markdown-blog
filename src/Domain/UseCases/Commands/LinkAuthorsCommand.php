@@ -43,8 +43,8 @@ class LinkAuthorsCommand
             'name' => $tag->name,
             'slug' => $tag->slug,
             'created_at' => now(),
-            'update_at' => now()
-        ], 'slug', ['name', 'slug', 'update_at']);
+            'updated_at' => now()
+        ], 'slug', ['name', 'slug', 'updated_at']);
 
         return $query->first()->id;
     }
