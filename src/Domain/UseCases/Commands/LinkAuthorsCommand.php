@@ -2,10 +2,9 @@
 
 namespace Thea\MarkdownBlog\Domain\UseCases\Commands;
 
+use Illuminate\Support\Facades\DB;
 use Thea\MarkdownBlog\Domain\ValueObjects\Author;
 use Thea\MarkdownBlog\Domain\ValueObjects\MarkdownPost;
-use Thea\MarkdownBlog\Domain\ValueObjects\Tag;
-use Illuminate\Support\Facades\DB;
 
 class LinkAuthorsCommand
 {

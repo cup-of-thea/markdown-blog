@@ -13,6 +13,7 @@ class LinkTaxonomiesCommand
         $this->linkCategory($post);
         $this->linkEdition($post);
         $this->linkTags($post);
+        $this->linkSeries($post);
     }
 
     /**
@@ -58,6 +59,7 @@ class LinkTaxonomiesCommand
                 ->update(['edition_id' => $editionId]);
         }
     }
+
     private function linkTags(MarkdownPost $post): void
     {
         if (!empty($post->meta->tags)) {
@@ -82,6 +84,31 @@ class LinkTaxonomiesCommand
         $query->count() ?: $query->insert(['title' => $tag->title, 'slug' => $tag->slug]);
 
         return $query->first()->id;
+    }
+
+    private function linkSeries(MarkdownPost $post): void
+    {
+        if (!empty($post->meta->series)) {
+            $seriesSlug = str($post->meta->series)->slug();
+
+            $query = DB::table('series')->where('slug', $seriesSlug);
+
+            $query->count() ?: $query->insert([
+                'title' => $post->meta->series,
+                'slug' => $seriesSlug,
+            ]);
+
+            $seriesId = $query->first()->id;
+
+            $postId = DB::table('posts')->where('slug', $post->meta->slug)->first()->id;
+
+            DB::table('episodes')
+                ->insertOrIgnore([
+                    'post_id' => $postId,
+                    'series_id' => $seriesId,
+                    'episode_number' => $post->meta->episode ?? '1',
+                ]);
+        }
     }
 
 }
