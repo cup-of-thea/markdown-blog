@@ -21,12 +21,12 @@ class SynchronizeCommand extends Command
         private readonly UpsertPostCommand     $upsertPostCommand,
         private readonly LinkTaxonomiesCommand $linkTaxonomiesCommand,
         private readonly LinkAuthorsCommand    $linkAuthorsCommand,
-        private readonly FillPostMetaCommand   $fillPostMetaCommand,
+        private readonly FillPostMetaCommand   $fillPostMetaCommand
     )
     {
         parent::__construct();
     }
-    
+
     protected $signature = 'app:synchronize';
 
     protected $description = 'Synchronize posts from storage to database.';

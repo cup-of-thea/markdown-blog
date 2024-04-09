@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('post_meta', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->unique()->constrained()->cascadeOnDelete();
             $table->integer('reading_time')->default(0);
             $table->integer('reading_count')->default(0);
             $table->string('review_authors')->nullable();
