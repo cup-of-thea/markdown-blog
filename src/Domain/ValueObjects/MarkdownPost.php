@@ -50,6 +50,8 @@ readonly class MarkdownPost
             'filePath' => $this->filePath,
             'date' => $this->meta->date->locale('fr'),
             'canonical' => $this->meta->canonical,
+            'image' => $this->meta->image,
+            'image_alt' => $this->meta->imageAlt,
         ];
     }
 }

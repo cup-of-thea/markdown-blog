@@ -27,6 +27,8 @@ edition: "Mars 2024"
 tags: ["tag1", "tag2"]
 canonical: "https://example.com/my-first-post"
 authors: ["Thea", "Jane"]
+image: "https://example.com/my-first-post.jpg"
+image_alt: "My first post image"
 ---
 
 # My first post
@@ -43,6 +45,8 @@ CONTENT
         $this->assertEquals('https://example.com/my-first-post', $postMeta->canonical);
         $this->assertEquals(['Thea', 'Jane'], $postMeta->authors);
         $this->assertEquals('My first post description', $postMeta->description);
+        $this->assertEquals('https://example.com/my-first-post.jpg', $postMeta->image);
+        $this->assertEquals('My first post image', $postMeta->imageAlt);
     }
 
     /**

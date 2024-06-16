@@ -14,7 +14,7 @@ class UpsertPostCommand
         $query->upsert(
             [...$post->toPostAttributes(), 'updated_at' => now(), 'created_at' => now()],
             'filePath',
-            ['title', 'slug', 'description', 'content', 'date', 'canonical', 'updated_at']
+            ['title', 'slug', 'description', 'image', 'image_alt', 'content', 'date', 'canonical', 'updated_at']
         );
 
         return $query->first()->id;
