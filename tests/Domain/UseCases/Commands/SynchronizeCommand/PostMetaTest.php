@@ -29,6 +29,8 @@ canonical: "https://example.com/my-first-post"
 authors: ["Thea", "Jane"]
 image: "https://example.com/my-first-post.jpg"
 image_alt: "My first post image"
+rows: 1
+cols: 2
 ---
 
 # My first post
@@ -47,6 +49,8 @@ CONTENT
         $this->assertEquals('My first post description', $postMeta->description);
         $this->assertEquals('https://example.com/my-first-post.jpg', $postMeta->image);
         $this->assertEquals('My first post image', $postMeta->imageAlt);
+        $this->assertEquals(1, $postMeta->rows);
+        $this->assertEquals(2, $postMeta->cols);
     }
 
     /**

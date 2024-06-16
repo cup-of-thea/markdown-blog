@@ -16,8 +16,10 @@ class FillPostMetaCommand
                 'post_id' => $postId,
                 'reading_time' => $readingTime,
                 'review_authors' => $post->meta->reviewAuthors,
+                'rows' => $post->meta->rows,
+                'cols' => $post->meta->cols,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ], ['post_id'], ['reading_time', 'review_authors', 'updated_at']);
+            ], ['post_id'], ['reading_time', 'review_authors', 'rows', 'cols', 'updated_at']);
     }
 }

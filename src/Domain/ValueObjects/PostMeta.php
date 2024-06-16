@@ -34,7 +34,9 @@ readonly class PostMeta
             episode: $params['episode'] ?? null,
             reviewAuthors: $params['review_authors'] ?? null,
             image: $params['image'] ?? null,
-            imageAlt: $params['image_alt'] ?? null
+            imageAlt: $params['image_alt'] ?? null,
+            rows: $params['rows'] ?? 2,
+            cols: $params['cols'] ?? 2,
         );
     }
 
@@ -53,6 +55,8 @@ readonly class PostMeta
         public ?string $reviewAuthors,
         public ?string $image,
         public ?string $imageAlt,
+        public int    $rows,
+        public int    $cols
     )
     {
     }
